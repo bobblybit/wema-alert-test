@@ -13,7 +13,8 @@ namespace OnBoardingService.MappingProfiles
         public CustomerMapping()
         {
             CreateMap<AppUser, CustomerToAddDto>().ReverseMap();
-            CreateMap<AppUser, CustomerToReturn>().ReverseMap();
+            //CreateMap<AppUser, CustomerToReturn>();
+            CreateMap<CustomerToReturn, AppUser>().ReverseMap();
         }
     }
 }

@@ -7,9 +7,13 @@ namespace OTPService.Data
 {
     public class PhoneNumberOTP
     {
-        public string Id { get; set; } = new Guid().ToString();
+        public string Id { get; set; }
         public string Phone { get; set; }
         public string OTPCode { get; set; }
 
+        public PhoneNumberOTP()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

@@ -49,7 +49,7 @@ namespace OTPService.Controllers
                 return Ok(Utilities.CreateResponse("This Provided Phone number Does not exist", ModelState, ""));
 
             }
-            return Ok(Utilities.CreateResponse("Token was successfully sent to phone number ", ModelState, "OPT:"+reponse));
+            return Ok(Utilities.CreateResponse("Token was successfully sent to phone number ", ModelState, "OPT: "+reponse));
         }
     }
 }
