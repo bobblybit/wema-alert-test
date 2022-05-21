@@ -1,4 +1,5 @@
 using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,9 +32,20 @@ namespace OnBoardingService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddMassTransit(x => {
+                x.UsingRabbitMq((ctx, config) =>
+                {
+                    config.Host("amqp://guest:guest@localhost:5672");
+                });
+            });
+            services.AddMassTransitHostedService();
+
             services.AddDbContext<OnBoardingDbContext>(
                option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
                );
+
+
             services.AddControllers();
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<OnBoardingDbContext>().AddDefaultTokenProviders();
             services.AddAutoMapper(typeof(Startup));

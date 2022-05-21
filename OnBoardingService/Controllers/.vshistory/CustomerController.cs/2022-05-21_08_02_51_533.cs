@@ -12,7 +12,6 @@ using MassTransit;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MqDtos;
 
 namespace OnBoardingService.Controllers
 {
