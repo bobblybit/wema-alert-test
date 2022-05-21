@@ -1,4 +1,5 @@
-# walking-skeleton
+# wema-alert-test
+
 A demo app used to teach the concept of building a web api using ASP.NET Core , Angular and EFCore Sql servier
 
 ## Tools to be featured in this app
