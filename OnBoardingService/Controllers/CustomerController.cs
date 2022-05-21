@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MqDtos;
+using OnBoardingService.Repository;
 
 namespace OnBoardingService.Controllers
 {
@@ -24,13 +25,18 @@ namespace OnBoardingService.Controllers
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _env;
         private readonly IPublishEndpoint _publishendpoint;
+        private readonly ICustomerService _customerRepo;
 
-        public CustomerController(UserManager<AppUser> userManager, IPublishEndpoint publishendpoint, IMapper mapper, IWebHostEnvironment env)
+        public CustomerController(UserManager<AppUser> userManager,
+                                  IPublishEndpoint publishendpoint,
+                                  IMapper mapper, IWebHostEnvironment env,
+                                  ICustomerService customerRepo)
         {
             _userManager = userManager;
             _mapper = mapper;
             _env = env;
             _publishendpoint = publishendpoint;
+            _customerRepo = customerRepo;
         }
 
         [HttpPost]
@@ -52,7 +58,7 @@ namespace OnBoardingService.Controllers
 
             var customer  = _mapper.Map<AppUser>(customerToAdd);
             customer.UserName = customerToAdd.Email;
-            var managerResponse = await _userManager.CreateAsync(customer, customer.Password);
+            var managerResponse = await _customerRepo.AddCustomer(customer);
 
             if (!managerResponse.Succeeded)
             {
@@ -72,6 +78,19 @@ namespace OnBoardingService.Controllers
             CustomerToReturn customerToReturn = _mapper.Map<CustomerToReturn>(customer);
 
             return Ok(Utilities.CreateResponse("Customer Was onboarded Successfully", ModelState, customerToReturn));
+        }
+
+
+        [HttpGet("get-all-customers")]
+        public async Task<IActionResult> CustomerToReturnDto()
+        {
+            var users = _customerRepo.GetAllCustomers();
+            if (users == null)
+            {
+                return Ok(Utilities.CreateResponse("No Customer was onboarded", ModelState, ""));
+            }
+
+            return Ok(Utilities.CreateResponse("No Customer was onboarded", ModelState, users));
         }
     }
 }

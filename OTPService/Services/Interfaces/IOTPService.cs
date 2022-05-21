@@ -8,6 +8,6 @@ namespace OTPService.Services.Interfaces
     public interface IOTPService
     {
         Task<bool> VerifyPhoneNumber(string phoneNumber, string code);
-        Task<bool> SendOTP(string Number);
+        Task<string> SendOTP(string Number);
     }
 }

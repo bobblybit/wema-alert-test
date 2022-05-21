@@ -86,4 +86,3 @@ C:\Users\hp\Desktop\micro\wema-alert-test\OTPService\obj\Debug\netcoreapp3.1\OTP
 C:\Users\hp\Desktop\micro\wema-alert-test\OTPService\obj\Debug\netcoreapp3.1\OTPService.dll
 C:\Users\hp\Desktop\micro\wema-alert-test\OTPService\obj\Debug\netcoreapp3.1\OTPService.pdb
 C:\Users\hp\Desktop\micro\wema-alert-test\OTPService\obj\Debug\netcoreapp3.1\OTPService.genruntimeconfig.cache
-C:\Users\hp\Desktop\micro\wema-alert-test\OTPService\obj\Debug\netcoreapp3.1\OTPService.csprojAssemblyReference.cache

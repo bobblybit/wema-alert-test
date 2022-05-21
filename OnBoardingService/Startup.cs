@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using OnBoardingService.Data.Models;
 using OnBoardingService.DataBase;
+using OnBoardingService.Repository;
+using OnBoardingService.Service.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +47,7 @@ namespace OnBoardingService
                option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
                );
 
+            services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddControllers();
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<OnBoardingDbContext>().AddDefaultTokenProviders();

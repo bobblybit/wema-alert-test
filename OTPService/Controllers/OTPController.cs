@@ -42,12 +42,14 @@ namespace OTPService.Controllers
                 return BadRequest(Utilities.CreateResponse<string>("Model error", ModelState, ""));
             }
 
-            if (!await _oTPService.SendOTP(model.PhoneNumber))
+            var reponse = await _oTPService.SendOTP(model.PhoneNumber);
+
+            if (reponse == null)
             {
                 return Ok(Utilities.CreateResponse("This Provided Phone number Does not exist", ModelState, ""));
 
             }
-            return Ok(Utilities.CreateResponse("Token was successfully sent to phone number ", ModelState, ""));
+            return Ok(Utilities.CreateResponse("Token was successfully sent to phone number ", ModelState, "OPT: "+reponse));
         }
     }
 }
