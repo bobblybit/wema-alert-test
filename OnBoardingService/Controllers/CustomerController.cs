@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +20,13 @@ namespace OnBoardingService.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-        public CustomerController(UserManager<AppUser> userManager, IMapper mapper)
+        private readonly IWebHostEnvironment _env;
+
+        public CustomerController(UserManager<AppUser> userManager, IMapper mapper, IWebHostEnvironment env)
         {
             _userManager = userManager;
             _mapper = mapper;
+            _env = env;
         }
 
         [HttpPost]
@@ -34,7 +38,7 @@ namespace OnBoardingService.Controllers
                 return BadRequest(Utilities.CreateResponse<string>("Model error", ModelState, ""));
             }
 
-            var response = StateAndLGA.Check(customerToAdd.StateOfResidence, customerToAdd.LGA);
+            var response = StateAndLGA.Check(customerToAdd.StateOfResidence, customerToAdd.LGA, _env);
 
             if (!response.Status)
             {
