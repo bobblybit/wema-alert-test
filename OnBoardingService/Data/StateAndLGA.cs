@@ -1,4 +1,5 @@
-﻿using OnBoardingService.Commons;
+﻿using Microsoft.AspNetCore.Hosting;
+using OnBoardingService.Commons;
 using OnBoardingService.Data.DTOS;
 using OnBoardingService.Data.Models;
 using System;
@@ -12,11 +13,17 @@ namespace OnBoardingService.Data
 {
     public class StateAndLGA
     {
-        public static StateResponse Check(string state, string lga)
+        public static StateResponse Check(string state, string lga, IWebHostEnvironment env)
         {
             StateResponse response = new StateResponse();
 
+
             var path = Path.GetFullPath(@"./Data/StatesAndLGA.json");
+            if (env.EnvironmentName.Equals("Production"))
+            {
+                path = Path.GetFullPath(@"app/Data/StatesAndLGA.json");
+            }
+
             var jsondata = File.ReadAllText(path);
             var output = JsonSerializer.Deserialize<List<StatesAndLga>>(jsondata, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
