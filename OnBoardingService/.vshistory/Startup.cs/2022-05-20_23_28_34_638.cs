@@ -1,20 +1,23 @@
-using BankService.Services.Interface;
-using BankService.Services.Implementation;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using OnBoardingService.Data.Models;
+using OnBoardingService.DataBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BankService
+namespace OnBoardingService
 {
     public class Startup
     {
@@ -28,12 +31,15 @@ namespace BankService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<OnBoardingDbContext>(
+               option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
+               );
             services.AddControllers();
-
-            services.AddScoped<IBankService, BankClient>();
+            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<OnBoardingDbContext>().AddDefaultTokenProviders();
+            services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bank listing", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Onboarding service", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -57,6 +63,7 @@ namespace BankService
             }
          });
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +72,6 @@ namespace BankService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
             }
 
             app.UseHttpsRedirection();
@@ -80,7 +86,7 @@ namespace BankService
             });
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "bank v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Onboarding v1"));
         }
     }
 }

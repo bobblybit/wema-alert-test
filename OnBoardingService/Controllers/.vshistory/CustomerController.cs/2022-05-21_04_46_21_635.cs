@@ -8,11 +8,9 @@ using OnBoardingService.Data;
 using OnBoardingService.Data.DTOS;
 using OnBoardingService.Data.Models;
 using System;
-using MassTransit;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MqDtos;
 
 namespace OnBoardingService.Controllers
 {
@@ -23,14 +21,12 @@ namespace OnBoardingService.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _env;
-        private readonly IPublishEndpoint _publishendpoint;
 
-        public CustomerController(UserManager<AppUser> userManager, IPublishEndpoint publishendpoint, IMapper mapper, IWebHostEnvironment env)
+        public CustomerController(UserManager<AppUser> userManager, IMapper mapper, IWebHostEnvironment env)
         {
             _userManager = userManager;
             _mapper = mapper;
             _env = env;
-            _publishendpoint = publishendpoint;
         }
 
         [HttpPost]
@@ -62,12 +58,6 @@ namespace OnBoardingService.Controllers
                 }
                 return BadRequest(Utilities.CreateResponse<string>("", ModelState, ""));
             }
-
-
-            var customerToPublish = new NewCustomerMqDto();
-            customerToPublish.PhoneNumber = customer.PhoneNumber;
-            await _publishendpoint.Publish<NewCustomerMqDto>(customerToPublish);
-
 
             CustomerToReturn customerToReturn = _mapper.Map<CustomerToReturn>(customer);
 

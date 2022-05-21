@@ -26,7 +26,8 @@ namespace OTPService.Services.Implementation
             if (phone == null)
                 return false;
 
-            string OTP = generator.Next(100, 500).ToString();
+
+            string OTP= generator.Next(100000, 500000).ToString();
 
             phone.OTPCode = OTP;
 
