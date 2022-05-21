@@ -18,20 +18,25 @@ namespace OTPService.Services.Implementation
             _OTPRespository = OTPRespository;
         }
 
-        public async Task<bool> SendOTP(string Number)
+        public async Task<string> SendOTP(string Number)
         {
 
             // get phone number by Id
             var phone = await _OTPRespository.GetByNumber(Number);
             if (phone == null)
-                return false;
+                return null;
 
 
             string OTP= generator.Next(100000, 500000).ToString();
 
             phone.OTPCode = OTP;
 
-            return await _OTPRespository.Update(phone);
+            var resonse = await _OTPRespository.Update(phone);
+            if (!resonse)
+            {
+                return null;
+            }
+            return OTP;
         }
 
         public async Task<bool> VerifyPhoneNumber(string phoneNumber, string code)
