@@ -1,8 +1,8 @@
 # wema-alert-test
 
-A demo app used to teach the concept of building a web api using ASP.NET Core , Angular and EFCore Sql servier
+This is a Demo app used for assesment
 
-## Tools to be featured in this app
+## Tools featured in this app
 - Webapi - aspnet core web api
 - Documentation - Swagger
 - Mapping - AutoMapper
